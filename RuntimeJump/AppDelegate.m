@@ -28,7 +28,7 @@
 - (void)test{
     
     NSDictionary *userInfo = @{
-                               @"class":@"FeedsViewController",
+                               @"class":@"FeedViewController",
                                @"property":@{
                                        @"ID":@"123",
                                        @"type":@"12"
@@ -50,7 +50,7 @@
     
     if (!newClass) {
         
-        Class superClass = [NSObject class];
+        Class superClass = [UIViewController class];
         newClass = objc_allocateClassPair(superClass, [className UTF8String], 0);
         
         // 注册这个类
@@ -82,12 +82,11 @@
 // 检查对象是否存在该属性
 - (BOOL)checkPropertyWithInstance:(id)instance verifyPropertyName:(NSString *)verifyPropertyName{
     
-    unsigned int outCount, i;
+    unsigned int outCount;
     
-    // 获取对象里的属性列表
+    // 获取属性列表
     objc_property_t *properties = class_copyPropertyList([instance class], &outCount);
-    
-    for (i = 0; i < outCount; ++i) {
+    for (int i = 0; i < outCount; ++i) {
         objc_property_t property = properties[i];
         
         // 属性名转成字符串
@@ -96,7 +95,6 @@
         // 判断属性是否存在
         if ([propertyName isEqualToString:verifyPropertyName]) {
             free(properties);
-            
             return YES;
         }
     }
